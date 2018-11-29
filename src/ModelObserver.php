@@ -19,18 +19,18 @@ class ModelObserver
     {
         $config = $this->getConfig($model);
 
-        if (! $this->shouldBeUpdated($model, $config)) {
+        if (! $this->shouldBeUpdated($config['model'], $config)) {
             return;
         }
 
-        $job = (new UpdateModelInSpreadsheet($model, $config))->onQueue($config['queue_name']);
+        $job = (new UpdateModelInSpreadsheet(($config['model'], $config))->onQueue($config['queue_name']);
         dispatch($job);
     }
 
     public function deleted($model)
     {
         $config = $this->getConfig($model);
-        $job = (new DeleteModelInSpreadsheet($model->id, $config))->onQueue($config['queue_name']);
+        $job = (new DeleteModelInSpreadsheet(($config['model']->id, $config))->onQueue($config['queue_name']);
         dispatch($job);
     }
 
@@ -50,7 +50,7 @@ class ModelObserver
      */
     private function shouldBeUpdated($model, $config)
     {
-        $touchedKeys = array_intersect(array_keys($config['sync_attributes']), array_keys($model->getDirty()));
+        $touchedKeys = array_intersect(array_keys($config['sync_attributes']), array_keys(($config['model']->getDirty()));
 
         return count($touchedKeys) >= 1;
     }
