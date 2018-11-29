@@ -11,7 +11,7 @@ class ModelObserver
     public function created($model)
     {
         $config = $this->getConfig($model);
-        $job = (new CreateModelInSpreadsheet($model, $config))->onQueue($config['queue_name']);
+        $job = (new CreateModelInSpreadsheet($config['model'], $config))->onQueue($config['queue_name']);
         dispatch($job);
     }
 
@@ -23,14 +23,14 @@ class ModelObserver
             return;
         }
 
-        $job = (new UpdateModelInSpreadsheet(($config['model'], $config))->onQueue($config['queue_name']);
+        $job = (new UpdateModelInSpreadsheet($config['model'], $config))->onQueue($config['queue_name']);
         dispatch($job);
     }
 
     public function deleted($model)
     {
         $config = $this->getConfig($model);
-        $job = (new DeleteModelInSpreadsheet(($config['model']->id, $config))->onQueue($config['queue_name']);
+        $job = (new DeleteModelInSpreadsheet($config['model']->id, $config))->onQueue($config['queue_name']);
         dispatch($job);
     }
 
@@ -50,7 +50,8 @@ class ModelObserver
      */
     private function shouldBeUpdated($model, $config)
     {
-        $touchedKeys = array_intersect(array_keys($config['sync_attributes']), array_keys(($config['model']->getDirty()));
+
+        $touchedKeys = array_intersect(array_keys($config['sync_attributes']), array_keys($config['model']->getDirty()));
 
         return count($touchedKeys) >= 1;
     }
