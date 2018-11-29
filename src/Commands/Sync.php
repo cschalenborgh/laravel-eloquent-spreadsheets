@@ -50,7 +50,7 @@ class Sync extends Command
         }
 
         $this->prepareConfig($modelType);
-        $model = new $modelType;
+        $model = new $this->config['model'];
 
         $range = "{$this->config['list_name']}!{$this->startColumn}2:{$this->endColumn}";
         $response = app(SpreadsheetService::class)->service()->spreadsheets_values->get(
