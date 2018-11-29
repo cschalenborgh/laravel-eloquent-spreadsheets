@@ -59,7 +59,7 @@ class EloquentSpreadsheetsServiceProvider extends ServiceProvider
                 continue;
             }
 
-            $modelClass::observe(new ModelObserver());
+            $modelConfig['model']::observe(new ModelObserver());
         }
 
         return true;
